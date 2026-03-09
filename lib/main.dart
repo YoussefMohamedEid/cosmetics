@@ -1,7 +1,7 @@
 import 'package:cosmetics/core/logic/adaptive_app_dimentions.dart';
 import 'package:cosmetics/core/logic/adaptive_text.dart';
 import 'package:cosmetics/core/logic/colors.dart';
-import 'package:cosmetics/views/register/otp_view.dart';
+import 'package:cosmetics/views/splash_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         ),
         colorScheme: ColorScheme.fromSeed(seedColor:kPrimaryMov),
       ),
-      home: const OtpView(),
+      home: const SplashView(),
     );
   }
 }

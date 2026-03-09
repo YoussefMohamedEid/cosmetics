@@ -16,6 +16,7 @@ class AppImages {
   static const String login = '$_basePath/login.png';
   static const String background = '$_basePath/background.jpg';
   static const String productPlaceholder = '$_basePath/product_placeholder.png';
+  static const String rightOTP = '$_basePath/right_otp.png';
 
   // يمكنك إضافة المزيد حسب الحاجة
 }
