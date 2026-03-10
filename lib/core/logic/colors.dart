@@ -5,4 +5,5 @@ const Color kPrimaryDarkBlue = Color(0xFF434C6D);
 const Color kPrimaryLightBlue = Color(0xFF8E8EA9);
 const Color kSemiwhite = Color(0xFFD9D9D9);
 const Color kWhite = Color(0xFFFFFFFF);
+const Color kbrown = Color(0xFF68372E);
 

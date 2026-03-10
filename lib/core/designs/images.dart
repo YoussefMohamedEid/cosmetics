@@ -18,5 +18,9 @@ class AppImages {
   static const String productPlaceholder = '$_basePath/product_placeholder.png';
   static const String rightOTP = '$_basePath/right_otp.png';
 
-  // يمكنك إضافة المزيد حسب الحاجة
+  // Home:
+  static const String ads = '$_basePath/home/ads.png';
+  static const String makeup = '$_basePath/home/makeup.png';
+
+
 }
