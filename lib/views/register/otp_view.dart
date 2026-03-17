@@ -18,93 +18,98 @@ class OtpView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(13.0),
-        child: SingleChildScrollView(
-          child: Form(
-            key: formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(height: AppDimensions.screenHeight * 0.035),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: CircleAvatar(
-                    backgroundColor: kSemiwhite,
-                    child: IconButton(
-                      icon: const Icon(
-                        Icons.arrow_back_ios_new_outlined,
-                        color: Color(0xff101010),
+    return GestureDetector(
+      onTap: (){
+         FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(13.0),
+          child: SingleChildScrollView(
+            child: Form(
+              key: formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(height: AppDimensions.screenHeight * 0.035),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: CircleAvatar(
+                      backgroundColor: kSemiwhite,
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.arrow_back_ios_new_outlined,
+                          color: Color(0xff101010),
+                        ),
+                        onPressed: () {
+                          GoTo.back(context);
+                        },
                       ),
+                    ),
+                  ),
+                  SizedBox(height: AppDimensions.screenHeight * 0.05),
+                  Image.asset(
+                    AppImages.logo,
+                    height: AppDimensions.screenHeight * 0.12,
+                  ),
+                  SizedBox(height: 40),
+                  Text("Verify code", style: TextStyles.bigDarkBlue),
+                  SizedBox(height: 40),
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      style: TextStyles.smallLightBlue,
+                      children: [
+                        TextSpan(
+                          text: "We just sent a 4-digit verification code to ",
+                        ),
+                        TextSpan(
+                          text:
+                              isEmail
+                                  ? "your email address "
+                                  : "your phone number ",
+                        ),
+                        TextSpan(
+                          text: checkThe,
+                          style: TextStyles.smallLightBlue.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: ". Enter the code in the box below to continue.",
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 40),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton(
                       onPressed: () {
                         GoTo.back(context);
                       },
+                      child: Text(
+                        isEmail
+                            ? "Edit the email address"
+                            : "Edit the phone number",
+                        style: TextStyles.smallMov,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: AppDimensions.screenHeight * 0.08),
-                Image.asset(
-                  AppImages.logo,
-                  height: AppDimensions.screenHeight * 0.12,
-                ),
-                SizedBox(height: 40),
-                Text("Verify code", style: TextStyles.bigDarkBlue),
-                SizedBox(height: 40),
-                RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    style: TextStyles.smallLightBlue,
-                    children: [
-                      TextSpan(
-                        text: "We just sent a 4-digit verification code to ",
-                      ),
-                      TextSpan(
-                        text:
-                            isEmail
-                                ? "your email address "
-                                : "your phone number ",
-                      ),
-                      TextSpan(
-                        text: checkThe,
-                        style: TextStyles.smallLightBlue.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ". Enter the code in the box below to continue.",
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 40),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: TextButton(
+                  // استبدال OTPWidget القديم بالجديد
+                  const OTPWidget(),
+                  SizedBox(height: AppDimensions.screenHeight * 0.04),
+                  CustomMainButton(
+                    text: "Done",
                     onPressed: () {
-                      GoTo.back(context);
+                      if (formKey.currentState!.validate()) {
+                        GoTo.offAll(context, HomeView());
+                      }
                     },
-                    child: Text(
-                      isEmail
-                          ? "Edit the email address"
-                          : "Edit the phone number",
-                      style: TextStyles.smallMov,
-                    ),
                   ),
-                ),
-                // استبدال OTPWidget القديم بالجديد
-                const OTPWidget(),
-                SizedBox(height: AppDimensions.screenHeight * 0.04),
-                CustomMainButton(
-                  text: "Done",
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      GoTo.offAll(context, HomeView());
-                    }
-                  },
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -164,44 +169,47 @@ class _OTPWidgetState extends State<OTPWidget> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         // حقل OTP باستخدام pin_code_fields
-        PinCodeTextField(
-          validator: (value) {
-            if (value == null || value.length != 4) {
-              return "Please enter the 4-digit code";
-            }
-            return null; // إذا كان الإدخال صحيحًا
-          },
-          appContext: context, // required: السياق
-          length: 4, // عدد الخانات
-          controller: _otpController, // للتحكم في النص
-          onChanged: (value) {
-            // يمكنك تنفيذ شيء عند تغيير النص (اختياري)
-          },
-          onCompleted: (value) {
-            // يتم استدعاؤها عند اكتمال الإدخال (امتلاء جميع الخانات)
-            print("اكتمل الإدخال: $value");
-            _verifyOtpCode(value);
-          },
-          pinTheme: PinTheme(
-            shape: PinCodeFieldShape.box, // شكل مربع
-            borderRadius: BorderRadius.circular(12),
-            fieldHeight: 60,
-            fieldWidth: 55,
-            borderWidth: 1.5,
-            activeColor:
-                kPrimaryMov, // لون الخانة النشطة (التي يتم التركيز عليها)
-            inactiveColor: Colors.grey, // لون الخانة غير النشطة
-            selectedColor: kPrimaryMov, // لون الخانة عند الضغط عليها
-            // يمكنك تفعيل الألوان المملوءة إذا أردت:
-            // activeFillColor: kPrimaryMov.withOpacity(0.1),
-            // inactiveFillColor: Colors.grey.shade200,
-            // selectedFillColor: kPrimaryMov.withOpacity(0.2),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40.0),
+          child: PinCodeTextField(
+            validator: (value) {
+              if (value == null || value.length != 4) {
+                return "Please enter the 4-digit code";
+              }
+              return null; // إذا كان الإدخال صحيحًا
+            },
+            appContext: context, // required: السياق
+            length: 4, // عدد الخانات
+            controller: _otpController, // للتحكم في النص
+            onChanged: (value) {
+              // يمكنك تنفيذ شيء عند تغيير النص (اختياري)
+            },
+            onCompleted: (value) {
+              // يتم استدعاؤها عند اكتمال الإدخال (امتلاء جميع الخانات)
+              print("اكتمل الإدخال: $value");
+              _verifyOtpCode(value);
+            },
+            pinTheme: PinTheme(
+              shape: PinCodeFieldShape.box, // شكل مربع
+              borderRadius: BorderRadius.circular(12),
+              fieldHeight: 60,
+              fieldWidth: 55,
+              borderWidth: 1.5,
+              activeColor:
+                  kPrimaryMov, // لون الخانة النشطة (التي يتم التركيز عليها)
+              inactiveColor: Colors.grey, // لون الخانة غير النشطة
+              selectedColor: kPrimaryMov, // لون الخانة عند الضغط عليها
+              // يمكنك تفعيل الألوان المملوءة إذا أردت:
+              // activeFillColor: kPrimaryMov.withOpacity(0.1),
+              // inactiveFillColor: Colors.grey.shade200,
+              // selectedFillColor: kPrimaryMov.withOpacity(0.2),
+            ),
+            keyboardType: TextInputType.number, // لوحة أرقام
+            textStyle: TextStyles.mediumDarkBlue, // نمط النص داخل الخانات
+            enableActiveFill: false, // إذا جعلتها true ستستخدم fill colors
+            autoFocus: true, // أول خانة تحصل على التركيز تلقائياً
+            obscureText: false, // لا تخفِ النص
           ),
-          keyboardType: TextInputType.number, // لوحة أرقام
-          textStyle: TextStyles.mediumDarkBlue, // نمط النص داخل الخانات
-          enableActiveFill: false, // إذا جعلتها true ستستخدم fill colors
-          autoFocus: true, // أول خانة تحصل على التركيز تلقائياً
-          obscureText: false, // لا تخفِ النص
         ),
         const SizedBox(height: 43),
         Row(

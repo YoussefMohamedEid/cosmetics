@@ -26,76 +26,81 @@ class _LoginViewState extends State<LoginView> {
   }
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(14.0),
-        child: SingleChildScrollView(
-          child: Form(
-            key: formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: AppDimensions.screenHeight * 0.1),
-                Image.asset(
-                  AppImages.login,
-                  width: AppDimensions.imageHeight(0.35),
-                ),
-                SizedBox(height: 25),
-                Text("Login Now", style: TextStyles.bigDarkBlue),
-                SizedBox(height: 14),
-                Text(
-                  "Please login to your account to continue using our app",
-                  style: TextStyles.smallLightBlue,
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 18),
-                PhoneNumberWidget(
-                  phoneController: phoneController,
-                ),
-                SizedBox(height: 6),
-                PasswordWidget(),
-                SizedBox(height: 6),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    child: Text(
-                      "Forgot password?",
-                      style: TextStyles.smallMov,
-                    ),
-
-                    onPressed: () {
-                      GoTo.to(context, const ForgetPasswordView());
-                    },
+    return GestureDetector(
+      onTap: (){
+         FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(14.0),
+          child: SingleChildScrollView(
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: AppDimensions.screenHeight * 0.1),
+                  Image.asset(
+                    AppImages.login,
+                    width: AppDimensions.imageHeight(0.35),
                   ),
-                ),
-                SizedBox(height: 24),
-                CustomMainButton(
-                  text: "Login",
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      GoTo.to(context, const SignUpView());
-                    }
-                  },
-                ),
-                SizedBox(height: AppDimensions.screenHeight * 0.04),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Don't have an account?",
-                      style: TextStyles.smallLightBlue,
-                    ),
-                    TextButton(
-                      child: Text("Sign Up", style: TextStyles.smallMov),
+                  SizedBox(height: 25),
+                  Text("Login Now", style: TextStyles.bigDarkBlue),
+                  SizedBox(height: 14),
+                  Text(
+                    "Please login to your account to continue using our app",
+                    style: TextStyles.smallLightBlue,
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 18),
+                  PhoneNumberWidget(
+                    phoneController: phoneController,
+                  ),
+                  SizedBox(height: 6),
+                  PasswordWidget(),
+                  SizedBox(height: 6),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      child: Text(
+                        "Forgot password?",
+                        style: TextStyles.smallMov,
+                      ),
+      
                       onPressed: () {
-                        GoTo.to(context, const SignUpView());
+                        GoTo.to(context, const ForgetPasswordView());
                       },
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                  SizedBox(height: 24),
+                  CustomMainButton(
+                    text: "Login",
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        GoTo.to(context, const SignUpView());
+                      }
+                    },
+                  ),
+                  SizedBox(height: AppDimensions.screenHeight * 0.04),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Don't have an account?",
+                        style: TextStyles.smallLightBlue,
+                      ),
+                      TextButton(
+                        child: Text("Sign Up", style: TextStyles.smallMov),
+                        onPressed: () {
+                          GoTo.to(context, const SignUpView());
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
